@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#EDEAE0;font-family:'Inter',system-ui,sans-serif}
+  .badge{display:inline-flex;align-items:center;justify-content:center;font:600 11px ui-monospace,Menlo,monospace;background:#2B2B28;color:#F5F3EA;border-radius:4px;padding:2px 7px;letter-spacing:0.5px}
+  .cap{font-size:12px;color:#6B685F;line-height:17px;max-width:390px}
+  .statusbar{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:12px;font-weight:600;background:#F4F1EA;color:#2B2B28}
+  .sigbar{display:flex;gap:3px;align-items:flex-end;height:9px}
+  .sigbar div{width:3px;background:currentColor;border-radius:1px}
+  .battery{width:19px;height:9px;border:1.4px solid currentColor;border-radius:2px;padding:1.5px;box-sizing:border-box;margin-left:5px}
+  .battery div{width:70%;height:100%;background:currentColor;border-radius:1px}
+  .frame{width:390px;border-radius:26px;overflow:hidden;box-shadow:0 10px 34px rgba(43,43,40,0.16);display:flex;flex-direction:column;background:#F4F1EA}
+  .appbar{height:48px;background:#FFFFFF;border-bottom:1px solid #DAD5C8;display:flex;align-items:center;padding:0 16px;font-size:16px;font-weight:600;color:#2B2B28}
+  .pillbtn{background:#E8C468;color:#2B2B28;border:none;border-radius:12px;padding:13px 26px;font-size:15px;font-weight:600;font-family:Inter,sans-serif;cursor:pointer}
+  .field{background:#FFFFFF;border:1px solid #DAD5C8;border-radius:12px;padding:13px 14px;font-size:15px;color:#2B2B28;display:flex;align-items:center;justify-content:space-between}
+  .thread{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-height:130px}
+  .bubble{align-self:flex-start;max-width:75%;background:#FFFFFF;border-radius:14px;padding:10px 14px;font-size:14px;line-height:20px;color:#2B2B28;box-shadow:0 1px 4px rgba(43,43,40,0.06)}
+  .composer{background:#FFFFFF;border-radius:20px;padding:11px 16px;font-size:15px;color:#2B2B28}
+  .composer.empty{color:#B7B3A6}
+  .banner{background:#FFFFFF;border-radius:12px;padding:12px 14px}
+  .banner .t{font-size:13px;font-weight:600;color:#2B2B28}
+  .banner .b{font-size:12px;color:#6B685F;margin-top:3px}
+  .sect{display:flex;flex-direction:column;gap:24px}
+  .sect > .head{display:flex;align-items:baseline;gap:12px}
+  .sect > .head h2{font-size:22px;font-weight:600;color:#2B2B28;margin:0}
+  .grid{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+  .item{display:flex;flex-direction:column;gap:10px}
+  .item > .lbl{display:flex;gap:8px;align-items:center}
+  .item > .lbl span:last-child{font-size:13px;color:#6B685F}
+  .swatch{font-size:12px;padding:6px 12px;border-radius:6px}
+  .pcard{background:#FFFFFF;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .pcard .row{display:flex;justify-content:space-between;align-items:center}
+  .pcard .name{display:flex;align-items:center;gap:8px}
+  .pcard .name b{font-size:15px;font-weight:600;color:#2B2B28}
+  .dot{font-size:14px}
+  .masked{font-size:13px;color:#6B685F;letter-spacing:1px}
+  .link{font-size:12px;color:#6B685F}
+  .fieldlabel{font-size:13px;font-weight:500;color:#6B685F;margin-bottom:8px}
+  .listcard{background:#FFFFFF;border-radius:12px;overflow:hidden}
+  .listrow{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #DAD5C8}
+  .listrow:last-child{border-bottom:none}
+  .listrow .ttl{font-size:16px;color:#2B2B28}
+  .listrow .sub{font-size:13px;color:#6B685F;margin-top:2px}
+  .listrow .chev{color:#B7B3A6}
+  .radio{width:14px;height:14px;border-radius:7px;border:2px solid #DAD5C8;display:inline-block;position:relative;box-sizing:border-box}
+  .radio.on{border-color:#E8C468}
+  .radio.on::after{content:'';position:absolute;inset:2px;background:#E8C468;border-radius:5px}
+  .choose{display:flex;align-items:center;gap:6px;font-size:12px;color:#6B685F}
+  .err{font-size:13px;color:#C0392B;font-weight:500}
+  .step{width:118px;background:#232B2B;border-radius:8px;padding:8px;font-size:11px;color:#A9B0AC}
+  .step .w{color:#F5F3EA;font-size:13px;position:relative;display:inline-block}
+  .step .w i{position:absolute;left:0;right:0;bottom:-2px;height:2px}
+</style>
+</helmet>
+<div style="padding:56px 56px 120px;display:flex;flex-direction:column;gap:64px;min-width:1900px">
+
+<div class="sect">
+  <div class="head"><span class="badge">A</span><h1 style="font-family:'Caveat',cursive;font-size:56px;font-weight:700;color:#2B2B28;margin:0;line-height:1">Chalkboard — UI Frame Gallery</h1></div>
+  <div style="display:flex;flex-direction:column;gap:16px;max-width:900px">
+    <p style="font-size:15px;line-height:23px;color:#6B685F;margin:0">Static, annotated mockups at real mobile width (390pt/dp), Android chrome primary. Covers the keyboard's core states, settings, AI provider management, and error/empty states — the chalk-on-slate correction metaphor stays literal: a coral underline draws under the flagged word, the word swaps, then the mark fades to chalk yellow.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+      <span class="swatch" style="background:#232B2B;color:#F5F3EA">bg.slate #232B2B</span>
+      <span class="swatch" style="background:#34403F;color:#F5F3EA">surface.key #34403F</span>
+      <span class="swatch" style="background:#2C3736;color:#F5F3EA">surface.keySpecial #2C3736</span>
+      <span class="swatch" style="background:#E8C468;color:#2B2B28">chalkYellow #E8C468</span>
+      <span class="swatch" style="background:#5B9279;color:#F5F3EA">dustyTeal #5B9279</span>
+      <span class="swatch" style="background:#E2725B;color:#F5F3EA">softCoral #E2725B</span>
+      <span class="swatch" style="background:#C0392B;color:#F5F3EA">state.error #C0392B</span>
+      <span class="swatch" style="background:#F4F1EA;color:#2B2B28;border:1px solid #DAD5C8">paper #F4F1EA</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION B -->
+<div class="sect">
+  <div class="head"><span class="badge">B</span><h2>Keyboard core states</h2></div>
+  <div class="grid">
+
+    <!-- B1 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B1</span><span>Default typing</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer empty">Type a message</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" grammar-button="idle" ai-button="none" hint-size="100%,270px"></dc-import>
+      </div>
+      <p class="cap">Touch targets: every row is 44dp tall. Row-1 letter keys are 33.8dp wide at a 390dp screen — ten keys and nine gaps do not fit at 44dp, so the grid takes the documented keyboard exception and hit slop claims the 4dp gutters, giving a 37.8dp effective target.</p>
+      <p class="cap">Contrast: text.chalk #F5F3EA on bg.slate #232B2B — 13.0:1, exceeds WCAG AAA.</p>
+    </div>
+
+    <!-- B2 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B2</span><span>Prediction active</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">I think your</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" suggestions='["you&apos;re","your","you"]' grammar-button="idle" ai-button="none" hint-size="100%,270px"></dc-import>
+      </div>
+      <p class="cap">Top candidate is set apart by weight only (600 vs 400) — never by colour. All three sit on text.chalk, so rank survives a greyscale screenshot and colour-blind vision alike.</p>
+    </div>
+
+    <!-- B3 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B3</span><span>Grammar-fix, idle</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">Their going to be late</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" grammar-button="idle" ai-button="none" hint-size="100%,270px"></dc-import>
+      </div>
+      <p class="cap">The ✓ button sits ready beside the suggestion strip — flags nothing until tapped. Nothing in the field is underlined, marked or recoloured on its own; the keyboard never annotates text it was not asked to check.</p>
+    </div>
+
+    <!-- B4 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B4</span><span>Grammar correction — live</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" grammar-button="demo" demo-original="Their" demo-corrected="They're" ai-button="none" hint-size="100%,320px"></dc-import>
+      </div>
+      <p class="cap">Tap the ✓ key above to play it: coral underline draws (150ms) → word cross-fades (100ms) → underline shifts coral→chalkYellow and fades (200ms). Multi-word corrections stagger 80ms each.</p>
+      <p class="cap">An IME cannot draw into the host app's field, so the sequence plays in a panel the keyboard owns and the corrected text is committed only once it settles.</p>
+      <p class="cap" style="font-style:italic">Reduced motion: instant text swap, no underline draw. The corrected word keeps a heavier weight afterwards, so the change never depends on the colour having been seen.</p>
+      <div style="display:flex;gap:8px;margin-top:2px">
+        <div class="step">
+          <div class="w">Their<i style="background:#E2725B;width:100%"></i></div>
+          <div style="margin-top:6px">1 · underline draws</div>
+        </div>
+        <div class="step">
+          <div class="w">They're<i style="background:#E2725B;width:100%"></i></div>
+          <div style="margin-top:6px">2 · word cross-fades</div>
+        </div>
+        <div class="step">
+          <div class="w">They're<i style="background:#E8C468;width:100%;opacity:0.4"></i></div>
+          <div style="margin-top:6px">3 · mark fades to yellow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B5</span><span>AI button absent</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">I think your</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" suggestions='["you&apos;re","your","you"]' grammar-button="idle" ai-button="none" hint-size="100%,270px"></dc-import>
+      </div>
+      <p class="cap">No AI provider configured — the suggestion strip simply reclaims the space, no disabled ghost button. Compare against B6, which is the same frame with a provider connected.</p>
+    </div>
+
+    <!-- B6 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B6</span><span>AI button active</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">I think your</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" suggestions='["you&apos;re","your","you"]' grammar-button="idle" ai-button="active" hint-size="100%,270px"></dc-import>
+      </div>
+      <p class="cap">✦ in dustyTeal confirms a provider is connected and ready to rewrite. The strip gives up 52dp to make room; nothing else in the layout moves.</p>
+    </div>
+
+    <!-- B7 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B7</span><span>Symbols layout</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">Room 204</div>
+        </div>
+        <dc-import name="Keyboard" layout="symbols" shift-mode="none" grammar-button="none" ai-button="none" hint-size="100%,270px"></dc-import>
+      </div>
+      <p class="cap">Secondary page — the 123 key toggles back to letters (ABC).</p>
+    </div>
+
+    <!-- B8 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">B8</span><span>Shift vs. caps lock</span></div>
+      <div style="display:flex;gap:24px">
+        <div class="frame">
+          <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+          <div class="appbar">Messages</div>
+          <dc-import name="Keyboard" layout="qwerty" shift-mode="shift" grammar-button="idle" ai-button="none" hint-size="100%,270px"></dc-import>
+        </div>
+        <div class="frame">
+          <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+          <div class="appbar">Messages</div>
+          <dc-import name="Keyboard" layout="qwerty" shift-mode="caps" grammar-button="idle" ai-button="none" hint-size="100%,270px"></dc-import>
+        </div>
+      </div>
+      <p class="cap" style="max-width:804px">Left: single shift — ⇧ in chalkYellow on the special key surface, one letter capitalised then it resets. Right: caps lock — the glyph itself changes to ⇪ and the key fills solid chalkYellow with a slate glyph. Two signals, so the lock is not carried by colour alone.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION C -->
+<div class="sect">
+  <div class="head"><span class="badge">C</span><h2>Settings home</h2></div>
+  <div class="grid">
+    <div class="item">
+      <div class="lbl"><span class="badge">C1</span><span>Settings list</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Settings</div>
+        <div style="padding:16px;min-height:420px">
+          <div class="listcard">
+            <div class="listrow">
+              <div><div class="ttl">Grammar correction</div><div class="sub">On-device</div></div>
+              <span class="chev">›</span>
+            </div>
+            <div class="listrow">
+              <div><div class="ttl">Prediction &amp; personal dictionary</div><div class="sub">142 words saved</div></div>
+              <span class="chev">›</span>
+            </div>
+            <div class="listrow">
+              <div><div class="ttl">AI providers</div><div class="sub">2 connected</div></div>
+              <span class="chev">›</span>
+            </div>
+            <div class="listrow">
+              <div><div class="ttl">Language</div><div class="sub">English (US)</div></div>
+              <span class="chev">›</span>
+            </div>
+            <div class="listrow">
+              <div><div class="ttl">About &amp; privacy</div></div>
+              <span class="chev">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">Every row states its current value in the subtitle, so the list answers "how is this configured" without being opened.</p>
+      <p class="cap">Contrast: text.ink #2B2B28 on surface.paperCard #FFFFFF — 14.2:1, exceeds WCAG AAA. The muted subtitle #6B685F on the same card is 5.7:1, which clears AA for its 13px size.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION D -->
+<div class="sect">
+  <div class="head"><span class="badge">D</span><h2>AI provider management</h2></div>
+  <div class="grid">
+
+    <!-- D1 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">D1</span><span>Empty state</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">‹  AI providers</div>
+        <div style="flex:1;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 32px;text-align:center">
+          <div style="font-family:'Caveat',cursive;font-size:30px;font-weight:600;color:#2B2B28">No AI provider connected yet</div>
+          <div style="font-size:14px;line-height:20px;color:#6B685F">Add a key to unlock AI rewrite. Typing and grammar correction work fine without one.</div>
+          <button class="pillbtn" style="margin-top:8px">+ Add key</button>
+        </div>
+      </div>
+      <p class="cap">Instructional, not decorative: one sentence naming what is missing, one action that fixes it, and an explicit statement that the app is not degraded without it.</p>
+    </div>
+
+    <!-- D2 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">D2</span><span>Add key flow</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">‹  Add provider</div>
+        <div style="padding:20px 16px;display:flex;flex-direction:column;gap:20px;min-height:400px">
+          <div>
+            <div class="fieldlabel">PROVIDER</div>
+            <div class="listcard">
+              <div class="listrow" style="border-left:3px solid #E8C468">
+                <span style="font-size:15px;color:#2B2B28;font-weight:500">Gemini</span><span style="color:#E8C468;font-size:16px">●</span>
+              </div>
+              <div class="listrow"><span style="font-size:15px;color:#2B2B28">Groq</span></div>
+              <div class="listrow"><span style="font-size:15px;color:#2B2B28">OpenAI</span></div>
+              <div class="listrow"><span style="font-size:15px;color:#2B2B28">Custom endpoint</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="fieldlabel">API KEY</div>
+            <div class="field"><span style="letter-spacing:2px">••••••••••••4f2a</span><span style="color:#6B685F;font-size:14px">show</span></div>
+          </div>
+          <button class="pillbtn">Validate</button>
+        </div>
+      </div>
+      <p class="cap">The key is validated against the provider before it is stored, so a dead credential can never back a visible rewrite button. Both outcomes:</p>
+      <div style="display:flex;gap:12px">
+        <div style="width:187px;background:#FFFFFF;border-radius:12px;padding:12px 14px;font-size:13px;color:#3F6B57;display:flex;align-items:center;gap:8px"><span style="color:#5B9279;font-size:16px">✓</span>Connected to Gemini</div>
+        <div style="width:187px;background:#FFFFFF;border-radius:12px;padding:12px 14px;border:1px solid #C0392B">
+          <div class="err">Invalid API key</div>
+          <div style="font-size:12px;color:#6B685F;margin-top:2px">Check the key and try again.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D3 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">D3</span><span>Populated list</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">‹  AI providers</div>
+        <div style="padding:16px;display:flex;flex-direction:column;gap:12px;min-height:404px">
+          <div class="pcard">
+            <div class="row">
+              <div class="name"><span class="dot" style="color:#5B9279">●</span><b>Gemini</b></div>
+              <span class="link">remove</span>
+            </div>
+            <div class="masked">••••••4f2a</div>
+            <div class="choose"><span class="radio on"></span>Default provider</div>
+          </div>
+          <div class="pcard">
+            <div class="row">
+              <div class="name"><span class="dot" style="color:#B7B3A6">●</span><b>OpenAI</b></div>
+              <span class="link">remove</span>
+            </div>
+            <div class="masked">••••••91cd</div>
+            <div class="choose"><span class="radio"></span>Set as default</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">Only the last four characters of a key are ever rendered, and only after it has been stored — the field in D2 is the one place the full value exists on screen.</p>
+    </div>
+
+    <!-- D4 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">D4</span><span>Custom endpoint</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">‹  Custom endpoint</div>
+        <div style="padding:20px 16px;display:flex;flex-direction:column;gap:20px;min-height:400px">
+          <div>
+            <div class="fieldlabel">BASE URL</div>
+            <div class="field"><span style="color:#2B2B28">https://api.example.com/v1</span></div>
+          </div>
+          <div>
+            <div class="fieldlabel">MODEL NAME</div>
+            <div class="field"><span style="color:#B7B3A6">llama-3.3-70b</span></div>
+          </div>
+          <div>
+            <div class="fieldlabel">API KEY</div>
+            <div class="field"><span style="letter-spacing:2px">••••••••••••</span><span style="color:#6B685F;font-size:14px">show</span></div>
+          </div>
+          <button class="pillbtn">Validate</button>
+        </div>
+      </div>
+      <p class="cap">Any OpenAI-compatible endpoint. Base URL is required; the model name shows the placeholder the endpoint will be asked for if left blank.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION E -->
+<div class="sect">
+  <div class="head"><span class="badge">E</span><h2>Error &amp; empty states</h2></div>
+  <div class="grid">
+
+    <!-- E1 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">E1</span><span>Grammar server unreachable</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">Their going to be late</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" suggestions='["you&apos;re","your","you"]' grammar-button="idle" ai-button="none" notice-title="Server grammar unavailable" notice-body="Couldn't reach the correction server. Spelling is still checked on-device." notice-severity="failure" hint-size="100%,330px"></dc-import>
+      </div>
+      <p class="cap">The notice is drawn in the panel the keyboard owns, not in the host app — an IME has no access to another app's views, so every message this product shows lives inside its own surface.</p>
+      <p class="cap">The ✓ button stays: only the server tier is down, and on-device spelling never needed it. Withdrawing the button would claim a larger outage than actually happened.</p>
+    </div>
+
+    <!-- E2 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">E2</span><span>AI rate-limited (429)</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">‹  AI providers</div>
+        <div style="padding:16px;min-height:404px">
+          <div class="pcard">
+            <div class="row"><div class="name"><span class="dot" style="color:#C0392B">●</span><b>Gemini</b></div></div>
+            <div class="err">Rate limited — try again in 2 min</div>
+            <div style="font-size:12px;color:#6B685F">Too many requests. AI rewrite is paused; typing and grammar checks are unaffected.</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">The wait is stated, never retried in a loop. The key stays stored: nothing is wrong with it.</p>
+    </div>
+
+    <!-- E3 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">E3</span><span>Invalid key (401/403)</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">‹  AI providers</div>
+        <div style="padding:16px;min-height:404px">
+          <div class="pcard">
+            <div class="row">
+              <div class="name"><span class="dot" style="color:#C0392B">●</span><b>OpenAI</b></div>
+              <span class="link">remove</span>
+            </div>
+            <div class="err">Invalid API key</div>
+            <div style="font-size:12px;color:#6B685F">This key was rejected by OpenAI. Add a new key to reconnect.</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">A key that was valid when stored and is rejected later is reported against the provider that rejected it, by name.</p>
+    </div>
+
+    <!-- E4 -->
+    <div class="item">
+      <div class="lbl"><span class="badge">E4</span><span>No network</span></div>
+      <div class="frame">
+        <div class="statusbar"><span>9:41</span><span style="display:flex;align-items:center"><div class="sigbar"><div style="height:4px"></div><div style="height:6px"></div><div style="height:8px"></div><div style="height:9px"></div></div><div class="battery"><div></div></div></span></div>
+        <div class="appbar">Messages</div>
+        <div class="thread">
+          <div class="bubble">Hey — still on for lunch tomorrow?</div>
+          <div style="flex:1"></div>
+          <div class="composer">Their going to be late</div>
+        </div>
+        <dc-import name="Keyboard" layout="qwerty" shift-mode="none" suggestions='["you&apos;re","your","you"]' grammar-button="idle" ai-button="none" notice-title="No internet connection" notice-body="Server grammar and AI rewrite are paused. Spelling and predictions still work on-device." notice-severity="neutral" hint-size="100%,330px"></dc-import>
+      </div>
+      <p class="cap">Muted rather than coral: nothing is broken and there is nothing to fix in the app. Telling this apart from E1 means asking the platform whether any network exists at all, which costs the ACCESS_NETWORK_STATE permission — a normal permission that reveals nothing about the user, and the price of not blaming the server for the user's tunnel.</p>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+</x-dc>
+</body>
+</html>

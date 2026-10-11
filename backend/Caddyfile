@@ -1,0 +1,41 @@
+# Reverse proxy in front of LanguageTool.
+#
+# Three jobs, in order of importance:
+#   1. terminate TLS (automatic certificates, no manual renewal);
+#   2. expose ONLY POST /v2/check — the container also serves /v2/languages and an admin
+#      surface that a public instance has no business offering;
+#   3. rate-limit per IP so one client cannot exhaust a free-tier instance.
+#
+# Replace grammar.example.com with your own hostname before deploying.
+
+grammar.example.com {
+	encode gzip
+
+	# Access logs record the request line only, never the body. The body is the user's
+	# text, and not retaining it is the claim the privacy policy makes.
+	log {
+		output stdout
+		format console
+	}
+
+	@check {
+		method POST
+		path /v2/check
+	}
+
+	handle @check {
+		rate_limit {
+			zone check {
+				key {remote_host}
+				events 30
+				window 1m
+			}
+		}
+		reverse_proxy languagetool:8010
+	}
+
+	# Everything else, including GET /v2/check and the language list, is refused.
+	handle {
+		respond "Not found" 404
+	}
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Chalkboard</string>
+	<key>CFBundleName</key>
+	<string>Chalkboard</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.chalkboard.keyboard.KeyboardExtension</string>
+	<key>CFBundlePackageType</key>
+	<string>XPC!</string>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>IsASCIICapable</key>
+			<true/>
+			<key>PrefersRightToLeft</key>
+			<false/>
+			<key>PrimaryLanguage</key>
+			<string>en-US</string>
+			<!--
+			  Full Access. Required only for the two optional network features: grammar
+			  checking against a user-configured LanguageTool server, and AI rewrite with
+			  the user's own API key. Typing and on-device prediction work without it,
+			  and the keyboard must stay fully usable when it is declined.
+
+			  App Review requires an in-app explanation before the user is sent to
+			  Settings; see ios/README.md and STORE.md.
+			-->
+			<key>RequestsOpenAccess</key>
+			<true/>
+		</dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.keyboard-service</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>$(PRODUCT_MODULE_NAME).KeyboardViewController</string>
+	</dict>
+</dict>
+</plist>

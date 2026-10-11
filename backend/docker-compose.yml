@@ -1,0 +1,41 @@
+services:
+  languagetool:
+    image: erikvl87/languagetool:6.4
+    container_name: chalkboard-languagetool
+    restart: unless-stopped
+    environment:
+      # Heap. LanguageTool is JVM-based and will happily use everything you give it;
+      # 512m fits the smallest free-tier instances and handles a keyboard's traffic,
+      # which is one short request per explicit key tap.
+      Java_Xms: 256m
+      Java_Xmx: 512m
+      # Do NOT enable the n-gram data unless you have the disk for it (8 GB+). It
+      # improves confusion-pair detection and is not worth the tier upgrade here.
+      langtool_languageModel: ""
+      # No request logging: the whole privacy claim is that we do not retain typed text.
+      langtool_warmUp: "true"
+    expose:
+      - "8010"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8010/v2/languages"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: chalkboard-caddy
+    restart: unless-stopped
+    depends_on:
+      - languagetool
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

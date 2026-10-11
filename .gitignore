@@ -1,0 +1,16 @@
+# Project-local toolchain: JDK, Android SDK, Gradle and its caches. Multi-gigabyte and
+# machine-specific — regenerate with the steps in README, never commit.
+/.tools/
+
+*.iml
+.gradle/
+.kotlin/
+/local.properties
+.idea/
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spacing (4px base) and shape tokens, section 1.3. -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- The full 4dp scale. The two largest steps are Compose-only so far; see the note
+         in colors.xml for why the ladder is kept whole rather than pruned to fit. -->
+    <dimen name="space_1">4dp</dimen>
+    <dimen name="space_2">8dp</dimen>
+    <dimen name="space_3">12dp</dimen>
+    <dimen name="space_4">16dp</dimen>
+    <dimen name="space_6" tools:ignore="UnusedResources">24dp</dimen>
+    <dimen name="space_8" tools:ignore="UnusedResources">32dp</dimen>
+
+    <dimen name="radius_key">8dp</dimen>
+    <dimen name="radius_card">12dp</dimen>
+    <dimen name="radius_suggestion_strip">20dp</dimen>
+
+    <!-- Accessibility floor, section 1.6: no touch target below 44dp. -->
+    <dimen name="min_touch_target">44dp</dimen>
+
+    <dimen name="key_row_height">52dp</dimen>
+    <!-- Used when the number row is on: five rows at 52dp crowd a small screen. Still
+         above the 44dp floor. -->
+    <dimen name="key_row_height_compact">46dp</dimen>
+    <dimen name="key_gap">4dp</dimen>
+    <dimen name="suggestion_strip_height">44dp</dimen>
+    <dimen name="key_label_size">18sp</dimen>
+    <dimen name="suggestion_word_size">15sp</dimen>
+    <dimen name="correction_text_size">16sp</dimen>
+
+    <!--
+      The suggestion bar, section B1-B6: a rounded strip with the grammar and rewrite
+      keys beside it as circles. Both circles are min_touch_target across, so the row
+      is exactly one touch target tall and needs no extra padding to clear the floor.
+    -->
+    <dimen name="suggestion_bar_gap">8dp</dimen>
+    <dimen name="suggestion_placeholder_size">14sp</dimen>
+    <dimen name="action_key_icon_size">20dp</dimen>
+    <!-- The C / F mode letter on the grammar key's corner. -->
+    <dimen name="mode_badge_text_size">10sp</dimen>
+
+    <!-- Notice banner, sections E1 and E4. -->
+    <dimen name="banner_rule_width">3dp</dimen>
+    <dimen name="banner_title_size">13sp</dimen>
+    <dimen name="banner_body_size">12sp</dimen>
+
+    <!-- Space bar's language caption, drawn muted beneath the key's own width. -->
+    <dimen name="key_caption_size">12sp</dimen>
+</resources>

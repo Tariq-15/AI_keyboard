@@ -1,0 +1,273 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Chalkboard</string>
+    <string name="ime_name">Chalkboard Keyboard</string>
+    <string name="subtype_en">English (US)</string>
+
+    <!-- Keyboard key content descriptions (accessibility, section 1.6). -->
+    <string name="key_shift">Shift</string>
+    <string name="key_caps_lock">Caps lock</string>
+    <string name="key_backspace">Backspace</string>
+    <string name="key_space">Space</string>
+    <string name="key_enter">Enter</string>
+    <string name="key_symbols">Symbols</string>
+    <string name="key_letters">Letters</string>
+    <string name="key_fix_grammar">Fix grammar</string>
+    <!-- %1$s is the mode name, Casual or Formal. -->
+    <string name="key_fix_grammar_mode">Fix grammar, %1$s mode. Hold to switch mode.</string>
+    <string name="key_ai_tools">AI tools</string>
+    <string name="key_emoji">Emoji</string>
+    <!-- The emoji panel's way back to the letters. A key label, not a word. -->
+    <string name="key_letters_label" translatable="false">ABC</string>
+
+    <!-- Grammar modes. The one-letter badges sit on the grammar key's corner. -->
+    <string name="grammar_mode_casual">Casual</string>
+    <string name="grammar_mode_formal">Formal</string>
+    <string name="grammar_mode_casual_badge" translatable="false">C</string>
+    <string name="grammar_mode_formal_badge" translatable="false">F</string>
+    <string name="grammar_mode_casual_body">Fixes mistakes only. Your punctuation, capitals and slang stay as typed.</string>
+    <string name="grammar_mode_formal_body">Also tidies capitals, punctuation and chat shorthand.</string>
+    <string name="grammar_mode_title">Correction style</string>
+    <string name="grammar_mode_hint">Hold the grammar key to switch without leaving the keyboard.</string>
+    <string name="notice_mode_casual_title">Casual corrections</string>
+    <string name="notice_mode_formal_title">Formal corrections</string>
+
+    <!-- After the keyboard has changed the field's text. The notice itself is the undo. -->
+    <string name="notice_corrected_title">Corrected</string>
+    <string name="notice_replaced_title">Text replaced</string>
+    <string name="notice_undo_body">Tap here to undo.</string>
+    <string name="notice_copied_title">Copied</string>
+
+    <!-- The tools panel. Captions say what a tool is for in three or four words. -->
+    <string name="tools_title">AI tools</string>
+    <string name="tools_assistants_add">+ New assistant</string>
+    <!-- Captions get one line in a third of the keyboard's width: two words. -->
+    <string name="tool_meaning">Meaning</string>
+    <string name="tool_meaning_caption">Slang, idioms</string>
+    <string name="tool_tone">Tone</string>
+    <string name="tool_tone_caption">Polite, formal</string>
+    <string name="tool_translate">Translate</string>
+    <string name="tool_translate_caption">Any language</string>
+    <string name="tool_reply">Reply</string>
+    <string name="tool_reply_caption">Copied message</string>
+    <string name="tool_ask">Ask AI</string>
+    <string name="tool_ask_caption">Any question</string>
+    <string name="tool_shorten">Shorten</string>
+    <string name="tool_shorten_caption">Fewer words</string>
+    <!-- %1$s = tool name, %2$s = the chosen tone or language. -->
+    <string name="tool_title_with_choice">%1$s · %2$s</string>
+    <string name="tool_working">Working…</string>
+    <string name="tool_copy">Copy</string>
+    <string name="tool_retry">Retry</string>
+    <string name="tool_insert">Insert</string>
+    <string name="tool_replace">Replace</string>
+    <string name="tool_reply_hint">Tap a reply to insert it.</string>
+    <!-- Temporary, with SampleAnswers: both go when the tools are connected to a model. -->
+    <string name="tool_sample_tag">SAMPLE</string>
+    <string name="tool_sample_note">Sample answer, shown so the layout can be checked. Real answers arrive when the AI tools are connected.</string>
+    <string-array name="tool_tones">
+        <item>Professional</item>
+        <item>Casual</item>
+        <item>Polite</item>
+        <item>Friendly</item>
+        <item>Funny</item>
+        <item>Empathetic</item>
+    </string-array>
+    <string-array name="tool_languages">
+        <item>English</item>
+        <item>Bangla</item>
+        <item>Hindi</item>
+        <item>Urdu</item>
+        <item>Banglish</item>
+        <item>Hinglish</item>
+        <item>Roman Urdu</item>
+    </string-array>
+    <!-- %1$s = candidate word, %2$d = its rank, %3$d = number of candidates. -->
+    <string name="suggestion_slot_description">%1$s, suggestion %2$d of %3$d</string>
+    <string name="suggestion_placeholder">Suggestions appear here</string>
+
+    <!--
+      Notices, sections E1-E4. Every one is a title naming what happened plus a body
+      saying what still works or what to do. Copy voice, section 1.5: state the fact and
+      the next action, in the interface\'s own voice. No apologies, no exclamation marks,
+      no emoji, and never a claim that more is broken than actually is.
+    -->
+    <string name="notice_grammar_server_title">Server grammar unavailable</string>
+    <string name="notice_grammar_server_body">Couldn\'t reach the correction server. Spelling is still checked on-device.</string>
+    <string name="notice_grammar_timeout_title">Server grammar timed out</string>
+    <string name="notice_grammar_timeout_body">The correction server did not respond. Spelling is still checked on-device.</string>
+    <string name="notice_grammar_error_body">The correction server returned an error. Check the address in settings.</string>
+    <string name="notice_grammar_unreadable_body">The correction server sent an unreadable response. Spelling is still checked on-device.</string>
+
+    <string name="notice_offline_title">No internet connection</string>
+    <string name="notice_offline_grammar_body">Server grammar is paused. Spelling and predictions still work on-device.</string>
+    <string name="notice_offline_ai_body">AI rewrite is paused. Typing, spelling and predictions still work on-device.</string>
+
+    <string name="notice_grammar_clean_title">Nothing to correct</string>
+    <string name="notice_grammar_checking_title">Checking…</string>
+    <string name="notice_grammar_empty_title">Type something to check</string>
+
+    <!-- %1$s is the provider name, spelled as the vendor spells it. -->
+    <string name="notice_ai_invalid_key_title">Invalid API key</string>
+    <string name="notice_ai_invalid_key_body">This key was rejected by %1$s. Add a new key to reconnect.</string>
+    <string name="notice_ai_rate_limited_title">Rate limited</string>
+    <!-- %1$s is a formatted duration such as "2 min". -->
+    <string name="notice_ai_rate_limited_title_retry">Rate limited — try again in %1$s</string>
+    <string name="notice_ai_rate_limited_body">Too many requests to %1$s. AI rewrite is paused; typing and grammar checks are unaffected.</string>
+    <string name="notice_ai_server_title">%1$s returned an error</string>
+    <string name="notice_ai_server_body">Try again later, or pick a different provider in settings.</string>
+    <string name="notice_ai_unreadable_title">%1$s sent an unreadable response</string>
+    <string name="notice_ai_unreadable_body">Nothing in your text was changed.</string>
+    <string name="notice_ai_unknown_title">Rewrite failed</string>
+    <string name="notice_ai_unknown_body">Nothing in your text was changed. Try again.</string>
+    <string name="notice_ai_none_title">No AI provider connected</string>
+    <string name="notice_ai_none_body">Add a free key in settings to turn on the AI tools.</string>
+    <!-- The same fact as the two lines above, for the tools panel, where it is tappable. -->
+    <string name="notice_ai_none_compact">No AI connected. Tap to add a free key.</string>
+    <string name="notice_ai_empty_title">Type something first</string>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%1$d sec</item>
+        <item quantity="other">%1$d sec</item>
+    </plurals>
+
+    <!-- %1$d = number of corrections, %2$s = the corrected text. Announced to screen readers. -->
+    <plurals name="correction_announcement">
+        <item quantity="one">%1$d correction applied. %2$s</item>
+        <item quantity="other">%1$d corrections applied. %2$s</item>
+    </plurals>
+
+    <!-- Settings, section C1. Each row states its current value, so the list answers
+         "how is this configured" without being opened. -->
+    <string name="settings_title">Settings</string>
+    <string name="nav_back">Back</string>
+    <string name="settings_row_grammar">Grammar correction</string>
+    <string name="settings_row_prediction">Prediction &amp; personal dictionary</string>
+    <string name="settings_row_providers">AI providers</string>
+    <string name="settings_row_language">Language</string>
+    <string name="settings_row_about">About &amp; privacy</string>
+    <!-- %1$s = correction style, %2$s = where corrections come from. -->
+    <string name="settings_value_grammar">%1$s · %2$s</string>
+    <string name="settings_value_assistants_none">No assistants yet</string>
+    <plurals name="settings_value_assistants">
+        <item quantity="one">%1$d assistant</item>
+        <item quantity="other">%1$d assistants</item>
+    </plurals>
+    <string name="settings_value_number_row_on">Number row on</string>
+    <string name="settings_value_number_row_off">Number row off</string>
+    <string name="settings_value_grammar_on_device">On-device</string>
+    <string name="settings_value_grammar_server">On-device, then server</string>
+    <string name="settings_value_providers_none">None connected</string>
+    <plurals name="settings_value_providers_connected">
+        <item quantity="one">%1$d connected</item>
+        <item quantity="other">%1$d connected</item>
+    </plurals>
+    <plurals name="settings_value_words_saved">
+        <item quantity="one">%1$d word saved</item>
+        <item quantity="other">%1$d words saved</item>
+    </plurals>
+
+    <!-- Setup. Shown until the keyboard is enabled and selected, then it stops taking
+         up room at the top of a list the user has finished with. -->
+    <string name="settings_step_enable">Enable Chalkboard in system settings</string>
+    <string name="settings_step_enable_body">Android requires you to turn on a keyboard before it can be used.</string>
+    <string name="settings_action_enable">Open keyboard settings</string>
+    <string name="settings_step_select">Switch to Chalkboard</string>
+    <string name="settings_step_select_body">Pick Chalkboard as the active input method.</string>
+    <string name="settings_action_select">Choose input method</string>
+    <string name="settings_status_not_enabled">Not enabled</string>
+    <string name="settings_status_not_active">Not active</string>
+    <string name="settings_try_it">Type here to try it</string>
+
+    <!-- Grammar detail screen. -->
+    <string name="grammar_screen_title">Grammar correction</string>
+    <string name="grammar_source_on_device">Grammar: on-device</string>
+    <string name="grammar_source_server">Grammar: server</string>
+    <string name="grammar_server_title">Correction server</string>
+    <string name="grammar_server_hint">LanguageTool server address</string>
+    <string name="grammar_server_explainer">Leave empty to use on-device spelling only. With no server address the app makes no network requests for grammar.</string>
+    <string name="grammar_save">Save address</string>
+    <string name="grammar_saved">Address saved</string>
+
+    <!-- Prediction detail screen. -->
+    <string name="prediction_screen_title">Prediction &amp; personal dictionary</string>
+    <string name="learning_title">Learned words</string>
+    <string name="learning_explainer">Words you type are learned on this device to improve suggestions. This never leaves your phone and is never sent anywhere.</string>
+    <string name="learning_clear">Delete learned words</string>
+    <string name="learning_cleared">Learned words deleted</string>
+
+    <!-- AI providers, sections D1-D4. -->
+    <string name="providers_screen_title">AI providers</string>
+    <string name="providers_add_title">Add provider</string>
+    <string name="providers_custom_title">Custom endpoint</string>
+    <string name="providers_empty_headline">No AI provider connected yet</string>
+    <string name="providers_empty_body">Add a free key to turn on the AI tools. Typing and spelling work fine without one.</string>
+    <string name="providers_add_key_action">+ Add key</string>
+    <string name="providers_label_provider">PROVIDER</string>
+    <string name="providers_label_api_key">API KEY</string>
+    <string name="providers_label_base_url">BASE URL</string>
+    <string name="providers_label_model">MODEL NAME</string>
+    <string name="providers_validate">Validate</string>
+    <string name="providers_show">show</string>
+    <string name="providers_hide">hide</string>
+    <string name="providers_checking">Checking key…</string>
+    <string name="providers_connected_to">Connected to %1$s</string>
+    <string name="providers_default">Default provider</string>
+    <string name="providers_set_default">Set as default</string>
+    <string name="providers_remove">remove</string>
+    <string name="providers_key_removed">Key removed</string>
+    <string name="providers_key_added">Key added</string>
+    <string name="providers_connected">Connected</string>
+    <string name="providers_get_key">Get a key from %1$s</string>
+    <string name="providers_key_hint">API key</string>
+    <!-- %1$s is the last four characters of the stored key; nothing else is ever shown. -->
+    <string name="providers_masked_key">••••••%1$s</string>
+    <string name="providers_custom_url_placeholder">https://api.example.com/v1</string>
+    <!-- A model identifier sent verbatim to the endpoint. Its hyphens are not punctuation. -->
+    <string name="providers_custom_model_placeholder" tools:ignore="TypographyDashes">llama-3.3-70b</string>
+    <string name="providers_custom_required">A custom endpoint needs a base URL before its key can be checked.</string>
+    <string name="providers_explainer">Your key is stored encrypted on this device and sent only to the provider you chose, under that provider\'s own terms. Rewriting runs only when you tap the rewrite key.</string>
+
+    <!-- AI tools detail screen: the parts of the tools panel that need typing to set up. -->
+    <string name="assistants_title">My assistants</string>
+    <string name="assistants_explainer">An assistant is an instruction you write once and run from the keyboard with one tap.</string>
+    <string name="assistants_name_hint">Name</string>
+    <string name="assistants_instruction_hint">What it should do with your text</string>
+    <string name="assistants_add">Add assistant</string>
+    <string name="languages_title">Translate to</string>
+    <string name="languages_explainer">English, Bangla, Hindi and Urdu are built in, along with Banglish, Hinglish and Roman Urdu. Add any other language you translate to.</string>
+    <string name="languages_hint">Language</string>
+    <string name="languages_add">Add language</string>
+
+    <!-- Keyboard layout detail screen. -->
+    <string name="layout_screen_title">Keyboard layout</string>
+    <string name="layout_number_row_title">Number row</string>
+    <string name="layout_number_row_body">Show the digits in a row of their own above the letters.</string>
+    <string name="layout_hints_title">Symbols on letters</string>
+    <string name="layout_hints_body">Hold a letter to type the small symbol in its corner.</string>
+
+    <!-- Language detail screen. -->
+    <string name="language_screen_title">Language</string>
+    <string name="language_explainer">English (US) is the only layout in this build. Layouts are data rather than code, so another language is a new table in KeyLayout and a dictionary to go with it.</string>
+
+    <!-- About &amp; privacy. -->
+    <string name="about_screen_title">About &amp; privacy</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_dictionary_title">Prediction dictionary</string>
+    <string name="about_dictionary_body">Built from the Tatoeba English sentence export (tatoeba.org), released under CC BY 2.0 FR.</string>
+    <string name="privacy_title">What leaves your phone</string>
+    <string name="privacy_prediction">Typing and next-word prediction stay on this device. Always.</string>
+    <string name="privacy_grammar">Grammar checking sends the text being checked to your LanguageTool server, only when you tap the grammar key.</string>
+    <string name="privacy_ai">Rewriting sends the selected text to the AI provider you configured, only when you tap the rewrite key.</string>
+    <string name="privacy_never">There is no continuous transmission of what you type. Ever.</string>
+
+    <!-- Enter key labels, chosen from EditorInfo.imeOptions. -->
+    <string name="enter_go">Go</string>
+    <string name="enter_send">Send</string>
+    <string name="enter_search">Search</string>
+    <string name="enter_done">Done</string>
+    <string name="enter_next">Next</string>
+</resources>

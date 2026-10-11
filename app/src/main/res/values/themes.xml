@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paper surface, used by the containing app (settings + onboarding). -->
+    <style name="Theme.Chalkboard.Paper" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/surface_paper</item>
+        <item name="android:statusBarColor">@color/surface_paper</item>
+        <!-- Dark clock and icons: the bar behind them is paper, not slate. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/surface_paper</item>
+        <item name="android:textColorPrimary">@color/text_ink</item>
+        <item name="android:textColorSecondary">@color/text_ink_muted</item>
+    </style>
+</resources>

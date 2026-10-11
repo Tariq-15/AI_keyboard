@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Design tokens, section 1.1. Single source of truth for the View-based keyboard.
+  Compose reads the same values from ui/theme/Color.kt — keep the two in sync.
+  Do not introduce ad hoc colors anywhere in the app.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="bg_slate">#FF232B2B</color>
+    <color name="surface_key">#FF34403F</color>
+    <color name="surface_key_pressed">#FF3E4C4B</color>
+    <color name="surface_key_special">#FF2C3736</color>
+    <color name="text_chalk">#FFF5F3EA</color>
+    <color name="text_chalk_muted">#FFA9B0AC</color>
+    <color name="accent_chalk_yellow">#FFE8C468</color>
+    <color name="accent_dusty_teal">#FF5B9279</color>
+    <!--
+      The mark that something is wrong, on slate: grammar-error underline and the rule
+      on a keyboard failure banner. Never decorative. state_error is the paper-surface
+      equivalent and never appears inside the keyboard.
+    -->
+    <color name="accent_soft_coral">#FFE2725B</color>
+    <!--
+      The paper half of the palette. Only Compose draws on paper today, so lint sees
+      three of these as unused — they are here because this file and Color.kt are one
+      token set kept deliberately in step, and a palette with holes in it is how the two
+      copies start to drift. Deleting them would save nothing: colours are not packaged
+      as files.
+    -->
+    <color name="surface_paper">#FFF4F1EA</color>
+    <color name="surface_paper_card" tools:ignore="UnusedResources">#FFFFFFFF</color>
+    <color name="text_ink">#FF2B2B28</color>
+    <color name="text_ink_muted">#FF6B685F</color>
+    <color name="border_hairline" tools:ignore="UnusedResources">#FFDAD5C8</color>
+    <color name="state_error" tools:ignore="UnusedResources">#FFC0392B</color>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nothing this app stores leaves the device, including by backup.
+
+  `allowBackup="false"` covers cloud backup, but from Android 12 device-to-device
+  transfer is governed separately by this file. Without it, `deviceTransfer` defaults to
+  including app data — which here means the encrypted API key store and the personal
+  learning database, the two things the privacy policy says never leave this phone.
+
+  Both sections are empty by design: an empty ruleset excludes everything.
+-->
+<data-extraction-rules>
+    <cloud-backup />
+    <device-transfer />
+</data-extraction-rules>
